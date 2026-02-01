@@ -1,5 +1,7 @@
 # PLAN
 
+Canonical plan: `PLAN.md` (repo root).
+
 ## Stack
 - Language: Python 3.10+
 - CLI: argparse

@@ -9,13 +9,17 @@ Regex explainer CLI: turn a regex into a human-readable breakdown and detect a f
 ```bash
 make setup
 make check
-python -m regex_explainer "^hello.*world$"
+regex-explainer "^hello.*world$"
 ```
 
 ## CLI
 ```bash
-python -m regex_explainer "[A-Z]+\d{2,4}"
-python -m regex_explainer "(ab)+" --flags=im
+regex-explainer "[A-Z]+\d{2,4}"
+regex-explainer "(ab)+" --flags=im
+regex-explainer "/[A-Z]+\\d{2,4}/im" --format=json
+echo "^hello.*world$" | regex-explainer - --warnings
+regex-explainer "(?im)^hello$" --warnings
+regex-explainer "hello.*world" --format=json
 ```
 
 ## License

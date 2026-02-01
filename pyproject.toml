@@ -4,7 +4,8 @@ version = "0.1.0"
 description = "Regex explainer CLI"
 requires-python = ">=3.10"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 
 [project.scripts]
 regex-explainer = "regex_explainer.cli:main"
@@ -19,6 +20,9 @@ strict = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [build-system]
 requires = ["setuptools>=68"]

@@ -5,6 +5,7 @@
 - Dev: `make dev`
 - Test: `make test`
 - Lint: `make lint`
+- Format: `make fmt`
 - Typecheck: `make typecheck`
 - Build: `make build`
 - Check: `make check`

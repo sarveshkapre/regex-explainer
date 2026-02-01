@@ -1,29 +1,34 @@
 SHELL := /bin/bash
 
-.PHONY: setup dev test lint typecheck build check release
+.PHONY: setup dev test lint fmt typecheck build check release
+
+# Prefer a local venv if present, otherwise fall back to python3.
+PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else command -v python3 2>/dev/null || command -v python; fi)
+PYTHONPATH ?= src
 
 setup:
-	python -m pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install -r requirements-dev.txt
+	$(PYTHON) -m pip install -e .
 
 fmt:
-	ruff format .
+	$(PYTHON) -m ruff format .
 
 lint:
-	ruff check .
+	$(PYTHON) -m ruff check .
 
 typecheck:
-	mypy src/regex_explainer
+	$(PYTHON) -m mypy src/regex_explainer
 
 test:
-	pytest
+	$(PYTHON) -m pytest
 
 dev:
-	python -m regex_explainer "^hello.*world$"
+	PYTHONPATH="$(PYTHONPATH)" $(PYTHON) -m regex_explainer "^hello.*world$"
 
 build:
-	python -m build
+	$(PYTHON) -m build
 
 check: lint typecheck test
 
 release:
-	python -m build
+	$(PYTHON) -m build
