@@ -34,6 +34,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="Do not print the warnings section (text format only).",
     )
     parser.add_argument(
+        "--explain-only",
+        action="store_true",
+        help="Alias for --no-warnings (text format only).",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress headings and blank lines (text format only).",
+    )
+    parser.add_argument(
         "--fail-on-warn",
         action="store_true",
         help="Exit with status 2 if any warnings are detected.",
@@ -128,6 +138,7 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         return 0
 
+    no_warnings = args.no_warnings or args.explain_only
     lines = explain_regex(pattern)
     warnings = analyze_regex(pattern)
 
@@ -143,20 +154,22 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         return 0
 
-    if flags:
-        print(f"Pattern: /{pattern}/{flags}")
-    else:
-        print(f"Pattern: /{pattern}/")
-    print("")
-    print("Explanation:")
+    if not args.quiet:
+        if flags:
+            print(f"Pattern: /{pattern}/{flags}")
+        else:
+            print(f"Pattern: /{pattern}/")
+        print("")
+        print("Explanation:")
     print(format_explanation(lines))
 
-    if not args.no_warnings:
-        print("")
-        print("Warnings:")
+    if not no_warnings:
+        if not args.quiet:
+            print("")
+            print("Warnings:")
         if warnings:
             print(format_warnings(warnings))
-        else:
+        elif not args.quiet:
             print("- No warnings detected")
 
     if args.fail_on_warn and warnings:

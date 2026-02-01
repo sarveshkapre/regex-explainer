@@ -5,6 +5,7 @@
 - Ensure `python -m regex_explainer` works via `src/regex_explainer/__main__.py`
 - Add `--format=json`, `--no-warnings`, stdin pattern support (`-`), `/pattern/flags`, and `--version`
 - Add implicit stdin support (when piped) and `--fail-on-warn` for CI-friendly checks
+- Add `--quiet` and `--explain-only` for script-friendly output
 - Improve warning heuristics (lazy quantifiers, inline flags anchor handling, nested quantified groups)
 - Improve explanations for group prefixes (scoped flags and named groups)
 - Add root `PLAN.md` / `CHANGELOG.md` / `UPDATE.md` and align `docs/` pointers

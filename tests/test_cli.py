@@ -42,6 +42,21 @@ def test_cli_fail_on_warn_nonzero_exit():
     assert proc.returncode == 2
 
 
+def test_cli_quiet_suppresses_headings():
+    proc = _run_cli([r"^ab$", "--quiet"])
+    assert proc.returncode == 0, proc.stderr
+    assert "Pattern:" not in proc.stdout
+    assert "Explanation:" not in proc.stdout
+    assert "Warnings:" not in proc.stdout
+    assert "- Start anchor" in proc.stdout
+
+
+def test_cli_explain_only_suppresses_warnings_section():
+    proc = _run_cli(["hello.*world", "--explain-only"])
+    assert proc.returncode == 0, proc.stderr
+    assert "Warnings:" not in proc.stdout
+
+
 def test_cli_version_flag():
     proc = _run_cli(["--version"])
     assert proc.returncode == 0, proc.stderr

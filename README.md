@@ -22,6 +22,8 @@ echo "^hello.*world$" | regex-explainer --format=json
 regex-explainer "(?im)^hello$" --warnings
 regex-explainer "hello.*world" --format=json
 regex-explainer "hello.*world" --fail-on-warn
+regex-explainer "^ab$" --quiet
+regex-explainer "hello.*world" --explain-only
 ```
 
 ## License
