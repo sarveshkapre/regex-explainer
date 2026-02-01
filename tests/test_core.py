@@ -20,6 +20,21 @@ def test_explain_has_lines():
     assert any("Character class" in line for line in lines)
 
 
+def test_explain_scoped_inline_flags_group_prefix():
+    lines = explain_regex(r"(?im:ab)")
+    assert any("Inline flags (?im:...)" in line for line in lines)
+
+
+def test_explain_named_capturing_group_prefix_python_style():
+    lines = explain_regex(r"(?P<word>\\w+)")
+    assert any("Named capturing group start (name word)" in line for line in lines)
+
+
+def test_explain_named_capturing_group_prefix_pcre_style():
+    lines = explain_regex(r"(?<word>\\w+)")
+    assert any("Named capturing group start (name word)" in line for line in lines)
+
+
 def test_warnings():
     warnings = analyze_regex("hello.*world")
     codes = {w.code for w in warnings}

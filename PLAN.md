@@ -29,6 +29,7 @@ More: `docs/PROJECT.md`.
 - `make setup` installs dev deps + editable package; `make build` works (adds `build` dev dep + setuptools src discovery)
 - Better output + automation: `--format=json`, `--no-warnings`, stdin (`-`), `/pattern/flags`, `--version`
 - Better heuristics: lazy quantifiers (`*?`/`+?`/`{m,n}?`), inline flags handling for anchors, nested-quantifier backtracking warning
+- Better explanations for group prefixes: scoped flags (`(?im:...)`) and named groups (`(?P<name>...)`, `(?<name>...)`)
 - Root-level `PLAN.md`, `CHANGELOG.md`, `UPDATE.md` added (docs files point to these)
 
 ## Next

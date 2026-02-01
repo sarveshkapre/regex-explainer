@@ -367,13 +367,27 @@ def _try_explain_group_prefix(tokens: List[Token], start: int) -> tuple[str, int
     if third == "<" and tok(start + 3) == "!":
         return ("Negative lookbehind start", start + 4)
     if third == "P" and tok(start + 3) == "<":
+        parsed = _parse_group_name(tokens, start + 4)
+        if parsed is not None:
+            name, next_i = parsed
+            return (f"Named capturing group start (name {name})", next_i)
         return ("Named capturing group start", start + 4)
+    if third == "<":
+        # PCRE/JS-style: `(?<name>...)`
+        parsed = _parse_group_name(tokens, start + 3)
+        if parsed is not None:
+            name, next_i = parsed
+            return (f"Named capturing group start (name {name})", next_i)
 
     # Inline flags group: `(?im)` (stop at the closing `)` if present).
     i = start + 2
     flag_chars: List[str] = []
     while i < len(tokens):
         value = tokens[i].value
+        if value == ":":
+            if flag_chars:
+                return (f"Inline flags (?{''.join(flag_chars)}:...) group start", i + 1)
+            return None
         if value == ")":
             if flag_chars:
                 return (f"Inline flags (?{''.join(flag_chars)})", i + 1)
@@ -383,4 +397,23 @@ def _try_explain_group_prefix(tokens: List[Token], start: int) -> tuple[str, int
         flag_chars.append(value)
         i += 1
 
+    return None
+
+
+def _parse_group_name(tokens: List[Token], start: int) -> tuple[str, int] | None:
+    # Parse a group name starting at `start`, stopping at the first unescaped `>`.
+    # Returns (name, next_index_after_gt).
+    name_chars: List[str] = []
+    i = start
+    while i < len(tokens):
+        value = tokens[i].value
+        if value == ">":
+            name = "".join(name_chars)
+            if name and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
+                return name, i + 1
+            return None
+        if tokens[i].kind != "literal" or not re.fullmatch(r"[A-Za-z0-9_]", value):
+            return None
+        name_chars.append(value)
+        i += 1
     return None
