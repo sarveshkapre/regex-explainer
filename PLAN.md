@@ -27,7 +27,7 @@ More: `docs/PROJECT.md`.
 - `python -m regex_explainer` works via `src/regex_explainer/__main__.py`
 - `make` targets work on systems without `python` (prefers `.venv/bin/python`, falls back to `python3`)
 - `make setup` installs dev deps + editable package; `make build` works (adds `build` dev dep + setuptools src discovery)
-- Better output + automation: `--format=json`, `--no-warnings`, stdin (`-`), `/pattern/flags`, `--version`
+- Better output + automation: `--format=json`, `--no-warnings`, stdin (`-` + implicit stdin), `/pattern/flags`, `--version`, `--fail-on-warn`
 - Better heuristics: lazy quantifiers (`*?`/`+?`/`{m,n}?`), inline flags handling for anchors, nested-quantifier backtracking warning
 - Better explanations for group prefixes: scoped flags (`(?im:...)`) and named groups (`(?P<name>...)`, `(?<name>...)`)
 - Root-level `PLAN.md`, `CHANGELOG.md`, `UPDATE.md` added (docs files point to these)

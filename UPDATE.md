@@ -4,6 +4,7 @@
 - Fix `make` targets on systems without `python` (prefer `.venv/bin/python`, fall back to `python3`)
 - Ensure `python -m regex_explainer` works via `src/regex_explainer/__main__.py`
 - Add `--format=json`, `--no-warnings`, stdin pattern support (`-`), `/pattern/flags`, and `--version`
+- Add implicit stdin support (when piped) and `--fail-on-warn` for CI-friendly checks
 - Improve warning heuristics (lazy quantifiers, inline flags anchor handling, nested quantified groups)
 - Improve explanations for group prefixes (scoped flags and named groups)
 - Add root `PLAN.md` / `CHANGELOG.md` / `UPDATE.md` and align `docs/` pointers

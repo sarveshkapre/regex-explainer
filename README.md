@@ -18,8 +18,10 @@ regex-explainer "[A-Z]+\d{2,4}"
 regex-explainer "(ab)+" --flags=im
 regex-explainer "/[A-Z]+\\d{2,4}/im" --format=json
 echo "^hello.*world$" | regex-explainer - --warnings
+echo "^hello.*world$" | regex-explainer --format=json
 regex-explainer "(?im)^hello$" --warnings
 regex-explainer "hello.*world" --format=json
+regex-explainer "hello.*world" --fail-on-warn
 ```
 
 ## License

@@ -30,6 +30,18 @@ def test_cli_stdin_pattern():
     assert payload["pattern"] == r"^hello.*world$"
 
 
+def test_cli_implicit_stdin_when_no_pattern_arg():
+    proc = _run_cli(["--format=json"], stdin=r"^hello$")
+    assert proc.returncode == 0, proc.stderr
+    payload = json.loads(proc.stdout)
+    assert payload["pattern"] == r"^hello$"
+
+
+def test_cli_fail_on_warn_nonzero_exit():
+    proc = _run_cli(["hello.*world", "--warnings", "--fail-on-warn"])
+    assert proc.returncode == 2
+
+
 def test_cli_version_flag():
     proc = _run_cli(["--version"])
     assert proc.returncode == 0, proc.stderr

@@ -33,6 +33,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Do not print the warnings section (text format only).",
     )
+    parser.add_argument(
+        "--fail-on-warn",
+        action="store_true",
+        help="Exit with status 2 if any warnings are detected.",
+    )
     parser.add_argument("--version", action="store_true", help="Print version and exit.")
     return parser
 
@@ -87,7 +92,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.pattern is None:
-        parser.error("the following arguments are required: pattern")
+        if sys.stdin.isatty():
+            parser.error("the following arguments are required: pattern")
+        args.pattern = "-"
 
     pattern = args.pattern
     flags = args.flags
@@ -117,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(format_warnings(warnings))
             else:
                 print("- No warnings detected")
+        if args.fail_on_warn and warnings:
+            return 2
         return 0
 
     lines = explain_regex(pattern)
@@ -130,6 +139,8 @@ def main(argv: list[str] | None = None) -> int:
             "warnings": [{"code": w.code, "message": w.message} for w in warnings],
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
+        if args.fail_on_warn and warnings:
+            return 2
         return 0
 
     if flags:
@@ -148,6 +159,8 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print("- No warnings detected")
 
+    if args.fail_on_warn and warnings:
+        return 2
     return 0
 
 
